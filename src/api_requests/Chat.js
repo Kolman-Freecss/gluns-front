@@ -9,7 +9,7 @@ const Chat = {
             const headers = {
                 'Content-Type': 'application/json',
             };
-            const response = await axios.post(
+            const response = await axios.get(
                 `${config.apiUrl}/chat`,
                 { headers }
             );
