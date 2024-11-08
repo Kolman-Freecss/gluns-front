@@ -6,6 +6,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { MdOutlineTipsAndUpdates } from "react-icons/md";
 import { useState, useEffect, useRef } from 'react';
 import { RiWechatChannelsLine } from "react-icons/ri";
+import ThemeChanger from '../screens/widgets/ThemeChanger';
 
 
 export default function Layout({ children }) {
@@ -41,6 +42,9 @@ export default function Layout({ children }) {
 
     return (
         <div className='flex place-items-center flex-col w-full h-screen'>
+            <div className='absolute top-0 left-0 m-5'>
+                <ThemeChanger />
+            </div>
             <div className="flex-1 flex justify-between w-full mt-10">
                 <button
                     className={`"btn btn-square inline-flex lg:hidden transition-all duration-100"`}
@@ -91,6 +95,5 @@ export default function Layout({ children }) {
 }
 
 Layout.propTypes = {
-    name: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired
 };

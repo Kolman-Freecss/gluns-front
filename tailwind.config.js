@@ -55,6 +55,7 @@ export default {
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         'shrink-rotate': 'hoverShrinkRotate 0.5s ease-in-out forwards',
+        fall: 'fall 0.5s ease-out forwards',
       },
       keyframes: {
         marquee: {
@@ -69,6 +70,10 @@ export default {
           '0%': { transform: 'scale(1) rotateY(0deg)' },
           '50%': { transform: 'scale(0.6) rotateY(180deg)' },
           '100%': { transform: 'scale(1) rotateY(360deg)' },
+        },
+        fall: {
+          '0%': { transform: 'translateY(-100px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
       },
       maxHeight: {
