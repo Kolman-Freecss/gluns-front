@@ -110,11 +110,11 @@ function Chat() {
         <div className={`flex h-full place-items-center px-40 w-full bg-transparent flex-col-reverse h-10* z-10 gap-2 ${context !== '' ? "mb-15" : "justify-center"}`}>
           <p className="font-thin text-xs place-self-center mt-1 mb-1">There may be mistakes in the answers.</p>
           <div className={`w-full p-4 flex gap-3 justify-center place-items-center`}>
-            <div className="dropdown dropdown-top">
-              <div tabIndex={0} role="button" className="btn m-1">Context</div>
+            <div className={`dropdown dropdown-top ${context == '' ? "hidden" : ''}`}>
+              <div tabIndex={0} role="button" className="btn m-1">{context}</div>
               <ul tabIndex={0} className="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow">
                 {contextList.map((item) => (
-                  <li key={item.id} className="btn btn-sm btn-block btn-ghost" onClick={() => setContext(item.id)}>{item.name}</li>
+                  <li key={item.id} className="btn btn-sm btn-block btn-ghost" onClick={() => setContext(item.name)}>{item.name}</li>
                 ))}
               </ul>
             </div>
@@ -138,7 +138,7 @@ function Chat() {
           <p className={`text-accent opacity-90 font-bold ${context !== '' ? "hidden" : ""}`} >It is necessary to select a context in order to formulate the question.</p>
           <div className={`flex gap-4 ${context !== '' ? "hidden" : ""}`}>
             {contextList.map((item) => (
-              <button key={item.id} className='rounded-3xl btn btn-secondary p-4' onClick={() => setContext(item.id)}> {item.name} </button>
+              <button key={item.id} className='rounded-3xl btn btn-secondary p-4' onClick={() => setContext(item.name)}> {item.name} </button>
             ))}
           </div>
         </div>
