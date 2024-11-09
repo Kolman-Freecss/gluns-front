@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  gluns-react:
+    container_name: gluns-react
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - react-data:/app
+
+volumes:
+  react-data:
