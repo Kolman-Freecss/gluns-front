@@ -10,12 +10,10 @@ const Login = {
             };
 
             const response = await axios.post(
-                `${config.baseUrl}${config.keyLockPort}${config.loginUrl}`,
+                `${config.baseUrl}${config.apiUrl}/iam/login`,
                 qs.stringify({
                     username: username,
                     password: password,
-                    grant_type: 'password',
-                    client_id: 'front-gluns'
                 }),
                 { headers }     
             );

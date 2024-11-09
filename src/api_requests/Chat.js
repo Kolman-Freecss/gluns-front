@@ -34,7 +34,7 @@ const Chat = {
         }
     },
 
-    // register: async (email, password, firstName, lastName) => {
+    // historic: async (email, password, firstName, lastName) => {
     //     try {
     //         const headers = {
     //             'Content-Type': 'application/json',
