@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { IoSend } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import ChatRepository from '../api_requests/Chat';
+import MessageOut from '../screens/widgets/MessageOut';
+import MessageIn from '../screens/widgets/MessageIn';
 
 function Chat() {
   const [message, setMessage] = useState('');
@@ -32,27 +34,23 @@ function Chat() {
     {
       id: 1,
       in: true,
-      text: `# Hola, ¿cómo estás?\nSoy un **mensaje** con formato _Markdown_ y código:\n\n\`\`\`javascript\nconst saludo = '¡Hola!';\nconsole.log(saludo);\n\`\`\``,
+      text: `Hello! How can I help you?`,
     },
     {
       id: 2,
       in: false,
-      text: `## Hola, bien gracias.\nAquí tienes una lista:\n- Elemento 1\n- Elemento 2\n- **Elemento importante**\n\nTambién tengo un bloque de código:\n\`\`\`python\nprint("Hola Mundo")\n\`\`\``,
-    },
-    {
-      id: 3,
-      in: true,
-      text: `### ¿Qué has hecho hoy?\nHe aprendido a usar \`ReactMarkdown\` y este es otro bloque de código en **HTML**:\n\`\`\`html\n<h1>Hola desde HTML</h1>\n<p>Este es un párrafo en HTML</p>\n\`\`\``,
+      text: `Hello! How can I help you?`,
     },
   ]);
   const [chatList, setChatList] = useState([]);
 
   const textareaRef = useRef(null);
+  const messagesEndRef = useRef(null); // Ref para el final de los mensajes
 
   useEffect(() => {
     const fetchChatList = async () => {
       try {
-        const response = await ChatRepository.chat(); // Añade await
+        const response = await ChatRepository.chat();
         setChatList(response.data);
       } catch (error) {
         console.error('Error fetching chat list:', error);
@@ -65,7 +63,7 @@ function Chat() {
   useEffect(() => {
     const fetchContextList = async () => {
       try {
-        const response = await ChatRepository.contexts(); // Añade await
+        const response = await ChatRepository.contexts();
         setContextList(response.data);
       } catch (error) {
         console.error('Error fetching context list:', error);
@@ -101,16 +99,38 @@ function Chat() {
     }
   };
 
+  // Efecto para bajar automáticamente al último mensaje
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <div className="flex h-full w-screen overflow-hidden transition-all duration-300">
       <div className={`w-full flex flex-col place-items-center`}>
         <div className='m-5'>
           <button className='btn rounded-2xl' onClick={() => document.getElementById('history').showModal()}>History</button>
         </div>
-        <div className={`flex h-full place-items-center px-40 w-full bg-transparent flex-col-reverse h-10* z-10 gap-2 ${context !== '' ? "mb-15" : "justify-center"}`}>
+        <div className={`h-full w-1/2 overflow-auto scrollbar-hide ${context === '' ? "hidden" : ''}`}>
+          {messages.map((message) => (
+            message.in ? (
+              <div key={message.id} className='chat chat-start'>
+                <MessageIn> {message.text} </MessageIn>
+              </div>
+            ) : (
+              <div key={message.id} className='chat chat-end'>
+                <MessageOut > {message.text} </MessageOut>
+              </div>
+            )
+          ))}
+          {/* Elemento al final para permitir que el scroll baje automáticamente */}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className={`flex place-items-center px-40 w-full bg-transparent flex-col-reverse h-10* z-10 gap-2 ${context !== '' ? "mb-15" : "justify-center h-full"}`}>
           <p className="font-thin text-xs place-self-center mt-1 mb-1">There may be mistakes in the answers.</p>
           <div className={`w-full p-4 flex gap-3 justify-center place-items-center`}>
-            <div className={`dropdown dropdown-top ${context == '' ? "hidden" : ''}`}>
+            <div className={`dropdown dropdown-top ${context === '' ? "hidden" : ''}`}>
               <div tabIndex={0} role="button" className="btn m-1">{context}</div>
               <ul tabIndex={0} className="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow">
                 {contextList.map((item) => (
