@@ -8,7 +8,7 @@ const Login = {
         'Content-Type': 'application/x-www-form-urlencoded',
       };
 
-      const url = `${config.baseUrl}${config.apiUrl}/iam/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+      const url = `${config.baseUrl}${config.apiPort}${config.apiUrl}/iam/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
       console.log('Login URL:', url);
 
       const response = await axios.post(url, null, { headers });
