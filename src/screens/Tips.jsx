@@ -1,4 +1,9 @@
+import ChatRepository from '../api_requests/Chat';
+import { useEffect, useState } from 'react';
+import NotAccessible from './widgets/NotAccessible';
+
 export default function Tips() {
+  const [chatList, setChatList] = useState([]);
   const tips = [
     {
       id: 1,
@@ -32,7 +37,22 @@ export default function Tips() {
     },
   ];
 
+  const fetchChatList = async () => {
+    try {
+      const response = await ChatRepository.chat();
+      const newChatList = response.data.body.map((chat) => ({ id: chat.chatHistoryId, name: chat.message }));
+      setChatList(newChatList);
+    } catch (error) {
+      console.error('Error fetching chat list:', error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchChatList();
+  }, []);
+
   return (
+    chatList.length !== 0 ? (
     <div className="p-5">
       <div className="grid grid-cols-2 gap-6">
         {tips.map((tip, index) => (
@@ -48,6 +68,7 @@ export default function Tips() {
           </div>
         ))}
       </div>
-    </div>
+    </div> ) : (
+      <NotAccessible />)
   );
 }

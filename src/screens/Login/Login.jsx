@@ -11,12 +11,10 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await LoginService.login(username, password);
-      console.log('Login successful:', response);
+      await LoginService.login(username, password);
       setError(null);
       navigate('/dashboard');
     } catch (error) {
-      console.log('Login failed:', error);
       setError(error.message);
     }
   };

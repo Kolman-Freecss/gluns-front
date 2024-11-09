@@ -1,24 +1,23 @@
 import axios from 'axios';
 import { config } from '../config/config.js';
 
+const token = localStorage.getItem('access_token');
 
 const Chat = {
-
     chat: async () => {
         try {
+            
             const headers = {
                 'Content-Type': 'application/json',
+                'Authorization': token
             };
 
             const response = await axios.get(
-                `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat/`,
+                `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat`,
                 { headers }
             );
-
-            console.log('Chat response:', response.data);
             return response;
         } catch (error) {
-            console.log('Chat error:', error);
             throw new Error(error.response.data.message);
         }
     },
@@ -26,7 +25,7 @@ const Chat = {
     contexts: async () => {
         try {
             const headers = {
-                'Content-Type': 'application/json',
+                'Authorization': token
             };
             const response = await axios.get(
                 `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat/contexts`,
@@ -38,22 +37,23 @@ const Chat = {
         }
     },
 
-    // historic: async (email, password, firstName, lastName) => {
-    //     try {
-    //         const headers = {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': '9286f77fdac66818891b5845814812dcb0830fb87c6f167f0c7b77377fe8d640cecaa2b23949b442c0bb165f777f68c9fe692615da1cd59a33ee8e7f8f699bd8'
-    //         };
-    //         const response = await axios.post(
-    //             `${config.apiUrl}/register`,
-    //             { email, password, first_name: firstName, last_name: lastName },
-    //             { headers }
-    //         );
-    //         return response.data;
-    //     } catch (error) {
-    //         throw new Error(error.response.data.message);
-    //     }
-    // },
+    request: async (chatId, context, message) => {
+        try {
+            const headers = {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            };
+            const response = await axios.post(
+                `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat/request`,
+                { "chatHistoryId": chatId, "contextType": context, "message": message },
+                { headers }
+            );
+            return response.data;
+
+        } catch (error) {
+            throw new Error(error.response.data.message);
+        }
+    },
 };
 
 export default Chat;

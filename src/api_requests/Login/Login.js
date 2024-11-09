@@ -9,11 +9,12 @@ const Login = {
       };
 
       const url = `${config.baseUrl}${config.apiPort}${config.apiUrl}/iam/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-      console.log('Login URL:', url);
 
       const response = await axios.post(url, null, { headers });
 
-      return response.data;
+      localStorage.setItem('access_token', "Bearer " + response.data.access_token);
+
+      return response;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Authentication failed');
     }
