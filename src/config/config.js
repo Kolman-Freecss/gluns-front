@@ -4,6 +4,7 @@ export const config = {
     loginUrl: "/realms/master/protocol/openid-connect/token",
     keyLockPort: 8080,
     pgAdminPort: 80,
+    apiPort: 8083,
     appVersion: "0.0.0.1",
     appStatus: "Development",
 };

@@ -9,12 +9,16 @@ const Chat = {
             const headers = {
                 'Content-Type': 'application/json',
             };
+
             const response = await axios.get(
-                `${config.apiUrl}/chat`,
+                `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat/`,
                 { headers }
             );
-            return response.data;
+
+            console.log('Chat response:', response.data);
+            return response;
         } catch (error) {
+            console.log('Chat error:', error);
             throw new Error(error.response.data.message);
         }
     },
@@ -25,10 +29,10 @@ const Chat = {
                 'Content-Type': 'application/json',
             };
             const response = await axios.get(
-                `${config.apiUrl}/chat/contexts`,
+                `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat/contexts`,
                 { headers }
             );
-            return response.data;
+            return response;
         } catch (error) {
             throw new Error(error.response.data.message);
         }
