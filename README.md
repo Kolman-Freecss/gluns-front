@@ -1,8 +1,34 @@
-# React + Vite
+# Gluns-React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for Gluns-Bank
 
-Currently, two official plugins are available:
+<img src="gluns-bank-logo.png" alt="Gluns Logo" width="400" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Index
+- [Useful Links](#useful-links)
+- [Brief Features Description](#brief-features-description)
+- [Use](#use)
+  - [Local](#local)
+  - [Docker](#docker)
+- [Tech stack](#tech-stack)
+  - [CI/CD](#cicd)
+  - [DB](#db)
+- [Architecture](#architecture)
+- [Infrastructure](#infrastructure)
+- [Configuration](#configuration)
+  - [Keycloak Configuration](#keycloak-configuration)
+- [Flows](#flows)
+
+## Useful Links
+
+- Frontend: https://localhost:5173/
+
+## Brief Features Description
+
+- 
+### Docker method
+
+```bash
+docker build --no-cache -t gluns-front 
+docker run -it -p 80:80 gluns-front
+```
