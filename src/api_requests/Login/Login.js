@@ -1,28 +1,23 @@
 import axios from 'axios';
-import qs from 'qs';
-import config from '../../config';
+import { config } from '../../config/config';
 
 const Login = {
-    login: async (username, password) => {
-        try {
-            const headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            };
+  login: async (username, password) => {
+    try {
+      const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
 
-            const response = await axios.post(
-                `${config.baseUrl}${config.apiUrl}/iam/login`,
-                qs.stringify({
-                    username: username,
-                    password: password,
-                }),
-                { headers }     
-            );
+      const url = `${config.baseUrl}${config.apiUrl}/iam/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+      console.log('Login URL:', url);
 
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.message || 'Authentication failed');
-        }
+      const response = await axios.post(url, null, { headers });
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Authentication failed');
     }
+  }
 };
 
 export default Login;
