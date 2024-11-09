@@ -9,8 +9,3 @@ services:
     restart: always
     ports:
       - "80:80"
-    volumes:
-      - react-data:/app
-
-volumes:
-  react-data:
