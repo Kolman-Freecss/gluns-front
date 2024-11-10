@@ -11,7 +11,7 @@ const Tips = {
                 'Content-Type': 'application/json',
                 'Authorization': token
             };
-            const response = await axios.post(
+            const response = await axios.get(
                 `${config.baseUrl}${config.apiPort}${config.apiUrl}/tips`,
                 { headers }
             );

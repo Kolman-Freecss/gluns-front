@@ -181,7 +181,7 @@ function Chat() {
           </div>
           <ul className="menu rounded-box flex gap-2">
             {Array.isArray(chatList) && chatList.map((chat) => (
-              <li key={chat.id} className='bg-base-300 rounded-xl'><a>{chat.name}</a></li>
+              <li key={chat.id} className='bg-base-300 rounded-xl' onClick={() => setSelectedChat(chat)}><a>{chat.name}</a></li>
             ))}
           </ul>
         </div>
