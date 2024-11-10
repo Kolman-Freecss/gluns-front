@@ -32,14 +32,48 @@ function Chat() {
       console.error('Error fetching chat list:', error);
     }
   };
+
+  const fetchMessages = async (chatId) => {
+    setLoading(true);
+    try {
+      const response = await ChatRepository.messages(chatId);
+      
+      const extractMessages = (messageNode) => {
+        const messages = [];
+        let currentNode = messageNode;
+  
+        while (currentNode) {
+          setContext({ id: currentNode.contextType, name: currentNode.contextType.replace(/_/g, ' ').toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') });
+          messages.push({
+            id: currentNode.id,
+            in: currentNode.userType === "BOT",
+            text: currentNode.message
+          });
+          currentNode = currentNode.next;
+        }
+  
+        return messages;
+      };
+  
+      const chatMessages = extractMessages(response.data.body);
+      setMessages(chatMessages);
+      setSelectedChat({ id: chatId });
+
+
+
+      console.log(chatMessages);
+  
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      setMessages([]);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   useEffect(() => {
     fetchChatList();
-    setSelectedChat({ id: chatList.length + 1, name: 'New Chat' });
   }, []);
-  
-  
-  
 
   useEffect(() => {
     const fetchContextList = async () => {
@@ -69,30 +103,45 @@ function Chat() {
 
   const handleSendMessage = async () => {
     if (message.trim() === '') return;
+  
+    let chatId;
+  
+    if (chatList.length === 0 && !selectedChat) {
+      chatId = 1;
+      setSelectedChat({ id: chatId, name: message });
+      setChatList((prevChatList) => [...prevChatList, { id: chatId, name: message }]);
+    }
+    else if (selectedChat) {
+      chatId = selectedChat.id;
+    } 
+    else {
+      chatId = chatList[chatList.length - 1].id + 1;
+      setSelectedChat({ id: chatId, name: message });
+      setChatList((prevChatList) => [...prevChatList, { id: chatId, name: message }]);
+    }
 
     setMessages((prevMessages) => [
       ...prevMessages,
       { id: prevMessages.length + 1, in: false, text: message },
     ]);
-
+  
     setLoading(true);
-
+  
     try {
-      const response = await ChatRepository.request(selectedChat != null ? selectedChat.id : 0, context.id, message);
-
+      const response = await ChatRepository.request(chatId, context.id, message);
+  
       setMessages((prevMessages) => [
         ...prevMessages,
         { id: prevMessages.length + 1, in: true, text: response.body.next.message },
       ]);
-
+  
       await fetchChatList();
-
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
       setLoading(false);
     }
-
+  
     setMessage('');
     textareaRef.current.style.height = 'auto';
   };
@@ -181,7 +230,7 @@ function Chat() {
           </div>
           <ul className="menu rounded-box flex gap-2">
             {Array.isArray(chatList) && chatList.map((chat) => (
-              <li key={chat.id} className='bg-base-300 rounded-xl' onClick={() => setSelectedChat(chat)}><a>{chat.name}</a></li>
+              <li key={chat.id} className='bg-base-300 rounded-xl' onClick={() => fetchMessages(chat.id)}><a>{chat.name}</a></li>
             ))}
           </ul>
         </div>

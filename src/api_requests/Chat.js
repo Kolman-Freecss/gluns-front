@@ -54,6 +54,21 @@ const Chat = {
             throw new Error(error.response.data.message);
         }
     },
+
+    messages: async (chatId) => {
+        try {
+            const headers = {
+                'Authorization': token
+            };
+            const response = await axios.get(
+                `${config.baseUrl}${config.apiPort}${config.apiUrl}/chat/${chatId}`,
+                { headers }
+            );
+            return response;
+        } catch (error) {
+            throw new Error(error.response.data.message);
+        }
+    }
 };
 
 export default Chat;
