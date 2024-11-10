@@ -14,7 +14,8 @@
 
 ## Useful Links
 
-- Frontend: https://localhost:5173/
+- Java Backend: https://github.com/Kolman-Freecss/gluns-spring/
+- Python Backend: https://github.com/shubhamsugara22/gluns-python-backend
 
 ## Brief Features Description
 
